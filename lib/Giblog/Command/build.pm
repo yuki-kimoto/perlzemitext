@@ -30,8 +30,20 @@ sub run {
     # Get content from file in templates directory
     $api->get_content($data);
 
-    # Parse Giblog syntax
-    $api->parse_giblog_syntax($data);
+    # Parse Markdown syntax
+    if ($data->{file} =~ /\.md$/) {
+      require Text::Markdown::Hoedown;
+
+      # Convert extension from md to html
+      $data->{file} =~ s/\.md$/.html/;
+
+      # Convert Markdown to HTML
+      $data->{content} = Text::Markdown::Hoedown::markdown($data->{content});
+    }
+    else {
+      # Parse Giblog syntax
+      $api->parse_giblog_syntax($data);
+    }
 
     # Parse title
     $api->parse_title_from_first_h_tag($data);
