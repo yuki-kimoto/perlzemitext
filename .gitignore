@@ -1,2 +1,5 @@
 public
 .vstags
+
+# local test
+.test
